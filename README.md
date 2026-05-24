@@ -1,119 +1,115 @@
-
 # 🍔 Brrgrr – Premium Burgers & Community Journal
 
-A full-stack web ecosystem that combines a responsive, client-side custom burger builder with a database-driven community micro-blogging engine.
+A full-stack ecosystem of a responsive, client-side burger customization application paired with a database-backed community micro-blogging platform.
 
 ---
 
-## 🌟 Core Features
+## 🌟 Key Features
 
-### 🍔 1. Pre-Customized Menu & Assembly Station
-* **Handcrafted Menu Catalogue:** Quick-access layout featuring 11 signature burgers, sides, and beverages rendered dynamically using ES6 array mappings.
-* **Ingredient Customizer:** Step-by-step interactive workspace providing ingredient stacking (patties, onions, toppings) with a limit constraint capping single builds to a maximum of 3 patties.
-* **Real-Time Billing Engine:** Instant checkout updates calculating individual item groupings, extra-cheese customization add-ons, CGST (9%), SGST (9%), and downloadable plain-text tax invoices.
-* **Live Order Queue Polling:** Background background-polling loops that fetch order history lists every 4 seconds to push live tracking states (`Pending` → `Preparing` → `Finished`) to the interface layout.
+### 🍔 1. Pre-Customized Menu & Build Station
+* **Handpicked Menu Inventory:** A quick-reference catalog that contains 11 special menu items displayed via dynamic ES6 array map rendering.
+* **Interactive Ingredient Builder:** An ingredient customization module for patty assembly that imposes a build restriction allowing a maximum of only 3 ingredients per burger.
+* **Instant Billing System:** Real-time billing calculator that provides separate item totals, extra cheese options, applicable CGST and SGST taxes, and text invoice generation.
+* **Dynamic Build Status Tracking:** Background loops that fetch order history information every 4 seconds to update the status bar from Pending, Preparing, and Finished.
 
-### 📜 2. Community Journal Engine
-* **Full CRUD Lifecycle Operations:** Allows authenticated users to compose articles, run keyword-targeted indexing query filters across titles or content, and view updates on a clean community timeline.
-* **Clearance Isolation Guards:** Robust security layer ensuring that blog entry purge choices appear exclusively to the original post creator or to verified kitchen staff nodes.
-* **Data Portability Extractions:** Administrative feature letting authenticated operators download entire text entry records into compiled, offline `.xlsx` spreadsheets seamlessly using SheetJS.
-
----
-
-## 📐 Implementation Blueprint Achievements
-
-### 🎨 Front-End Architecture
-* **Arrays & Higher-Order Functions:** Extensive utilization of native ES6 methods (`.map()`, `.reduce()`, `.filter()`, `.findIndex()`) to manage state mutations and aggregate pricing totals dynamically.
-* **DOM Manipulation:** High-fidelity layout updates parsing runtime modifications, cart line item grouping, and immediate workspace dark/light color mode transformations.
-
-### ⚙️ Back-End & Database Structure
-* **Object-Oriented Programming (OOP):** Solid base class abstractions managing clean encapsulation layers across internal data schemas (`DataEntity` base inheritance mapping `User` and `Post` records).
-* **Stateful Sessions:** Implements persistent session tokens mapping cross-terminal clearances natively on top of isolated customer and kitchen staff workspaces.
-* **Relational Database Integrity:** Implements persistent pool connections structured with explicit SQL cascading constraints (`ON DELETE CASCADE`) preventing database reference disconnects.
+### 📜 2. Community Blogging Engine
+* **CRUD Functionalities:** Enables registered users to create blog entries and search through a list using keywords to index article titles and bodies on the dashboard feed.
+* **Purge Guards:** An isolation module that ensures clearance of posts can be done only by the post owner or certified kitchen employees.
+* **Data Portability Extractions:** Administrative tool that enables users with valid login permissions to export entire text data entries into downloadable `.xlsx` sheets through SheetJS.
 
 ---
 
-## 📂 Project Directory Structure
+## 📐 Blueprint Implementation Achievements
+
+### 🎨 Front-End Implementation
+* **Arrays & Functional Programing Techniques:** Widespread use of inbuilt ES6 functionalities such as `.map()`, `.reduce()`, `.filter()`, and `.findIndex()` in state management and price sum aggregations.
+* **DOM Manipulations:** DOM manipulation with high fidelity updates involving parsing changes on runtime, grouping of items within a cart, and switching light/dark modes of interface.
+
+### ⚙️ Back-End Implementation and Databases
+* **Object-Oriented Programming (OOP):** Strong OOP base classes that help with encapsulation of internal data models through base inheritance of `DataEntity` (mapping User and Post objects).
+* **Stateful Sessions:** Uses sessions through tokens for persistent user clearance mappings based on cross-terminal customer/kitchen worker workstations.
+* **Database Integrities:** Persistant pool connections and cascading constraints (`ON DELETE CASCADE`) to prevent database references issues.
+
+---
+
+## 📂 Project Folder Hierarchy
 
 ```text
 ├── models/
-│   └── BlogModels.js      # OOP Entity Model Class Formats (User, Post)
-├── app.js                 # Front-End UI Logic, Cart Arrays, and Polling Loops
-├── customer.html          # Customer Ordering & History Dashboard View
-├── index.html             # Portal System Entry Welcome Gateway
-├── login.html             # Unified Access Terminal & User Registration Gate
-├── package.json           # Application Dependency Registries & Spin Scripts
-├── package-lock.json      # Complete Dependency Lock Metric History
-├── server.js              # Node.js Express Backend API Engine & Security Guards
-└── style.css              # Core Layout Variables, Badges, and Theme Context
+│   └── BlogModels.js      # Object Oriented Programming Entity Model Classes (User, Post)
+├── app.js                 # UI Front-End Code & Cart Arrays and Polling Loops 
+├── customer.html          # Customer Ordering & History Dashboard Interface
+├── index.html             # Welcome Page to Portal System Gateway
+├── login.html             # Single Login Terminal and Registration Gate for All Users
+├── package.json           # Dependencies Registry & Scripts
+├── package-lock.json      # Complete Dependencies Lock Metrics
+├── server.js              # Node.js Backend Server with Express API and Security Guards
+└── style.css              # Core Layout Variables, Badges, and Theme Contexts
 
 ```
 
 ---
 
-## 💻 Local Workspace Installation
+## 💻 Local Workspace Setup
 
-### 1. Replicate Database Environment
+### 1. Create Database Environment
 
-Execute the following commands within your local MySQL client terminal to provision the schemas and populate default user profiles:
-
+Run the following queries on your MySQL console to setup schema & populate default users:
 ```sql
-CREATE DATABASE IF NOT EXISTS blog_db;
-USE blog_db;
+create database if not exists blog_db;
+use blog_db;
 
-CREATE TABLE IF NOT EXISTS users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(50) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    role ENUM('customer', 'staff') DEFAULT 'customer',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+create table if not exists users (
+    id int auto_increment primary key,
+    username varchar(50) unique not null,
+    password varchar(255) not null,
+    role enum('customer', 'staff') default 'customer',
+    created_at timestamp default current_timestamp
 );
 
-CREATE TABLE IF NOT EXISTS posts (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    title VARCHAR(150) NOT NULL,
-    content TEXT NOT NULL,
-    author_id INT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (author_id) REFERENCES users(id) ON DELETE CASCADE
+create table if not exists posts (
+    id int auto_increment primary key,
+    title varchar(150) not null,
+    content text not null,
+    author_id int not null,
+    created_at timestamp default current_timestamp,
+    foreign key (author_id) references users(id) on delete cascade
 );
 
-CREATE TABLE IF NOT EXISTS orders (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    customer_id INT NOT NULL,
-    customer_name VARCHAR(50) NOT NULL,
-    items_summary TEXT NOT NULL,
-    total_price DECIMAL(10,2) NOT NULL,
-    status ENUM('Pending', 'Preparing', 'Finished') DEFAULT 'Pending',
-    receipt_blob TEXT,
-    order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (customer_id) REFERENCES users(id) ON DELETE CASCADE
+create table if not exists orders (
+    id int auto_increment primary key,
+    customer_id int not null,
+    customer_name varchar(50) not null,
+    items_summary text not null,
+    total_price decimal(10,2) not null,
+    status enum('pending', 'preparing', 'finished') default 'pending',
+    receipt_blob text,
+    order_date timestamp default current_timestamp,
+    foreign key (customer_id) references users(id) on delete cascade
 );
 
-INSERT IGNORE INTO users (id, username, password, role) VALUES 
-(1, 'Jane', '156556', 'customer'),
-(2, 'Preety', '123456', 'staff');
+insert ignore into users (id, username, password, role) values 
+(1, 'jane', '156556', 'customer'),
+(2, 'preety', '123456', 'staff');
 
 ```
+### 2. Installation & Launch Workspace Environment
 
-### 2. Install and Spin Workspace Environment
-
-Open your desktop workstation terminal inside the root directory and fire up the application runtime:
+Navigate to your desktop workstation terminal located in the root folder and launch your application:
 
 ```bash
-# Install framework dependencies
+# Installation of framework libraries
 npm install
 
-# Start the unified backend engine lifecycle
+# Launch the unified backend engine lifecycle
 npm start
 
 ```
 
-Once running successfully, launch your browser and connect through:
+After successful initialization, open your web browser and navigate via:
 👉 **`http://localhost:3000/login.html`**
 
-### 🔐 Pre-Seeded Default Accounts
-
+### 🔐 Preset Default User Accounts
 * **Customer Profile:** Username: `Jane` | Password: `156556`
 * **Official Kitchen Staff:** Username: `Preety` | Password: `123456`
 
