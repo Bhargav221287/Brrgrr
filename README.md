@@ -117,6 +117,5 @@ Once running successfully, launch your browser and connect through:
 * **Customer Profile:** Username: `Jane` | Password: `156556`
 * **Official Kitchen Staff:** Username: `Preety` | Password: `123456`
 
-```
 
 ```
