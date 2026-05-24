@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Identity Gateway Hub</title>
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        input[type="text"], input[type="password"], select {
+            width: 100%; padding: 12px; margin: 8px 0 16px 0;
+            border: 1px solid var(--border-light); background: var(--bg-light);
+            color: var(--text-main-light); border-radius: 8px; box-sizing: border-box;
+            font-family: inherit; font-weight: 600; transition: var(--transition);
+        }
+        input:focus, select:focus { outline: none; border-color: var(--primary-neon); box-shadow: 0 0 0 3px rgba(255, 159, 13, 0.15); }
+        label { font-weight: 700; font-size: 0.9em; color: var(--text-main-light); }
+        .login-nav-top-bar { display: flex; justify-content: space-between; align-items: center; padding: 15px 40px; background: var(--card-light); border-bottom: 1px solid var(--border-light); }
+        .form-toggle-btn { background: none; border: none; color: var(--primary-neon); font-weight: 700; cursor: pointer; text-decoration: underline; font-family: inherit; }
+    </style>
+    <script>
+        function toggleLoginTheme() {
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            const label = document.getElementById('theme-mode-label');
+            if (!isDark) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                label.innerText = "Dark Mode Active";
+            } else {
+                document.documentElement.setAttribute('data-theme', 'light');
+                label.innerText = "Light Mode Active";
+            }
+        }
+
+        function switchFormMode(mode) {
+            const loginCard = document.getElementById('login-form-card');
+            const registerCard = document.getElementById('register-form-card');
+            if (mode === 'register') {
+                loginCard.style.display = 'none';
+                registerCard.style.display = 'block';
+            } else {
+                loginCard.style.display = 'block';
+                registerCard.style.display = 'none';
+            }
+        }
+    </script>
+</head>
+<body>
+
+    <div class="login-nav-top-bar">
+        <div class="theme-switch-wrapper">
+            <label class="theme-switch" for="checkbox-theme-toggle">
+                <input type="checkbox" id="checkbox-theme-toggle" onclick="toggleLoginTheme()">
+                <span class="slider"></span>
+            </label>
+            <span id="theme-mode-label" style="font-size: 0.85em; font-weight: 700; color: var(--text-muted-light);">Light Mode</span>
+        </div>
+    </div>
+
+    <div id="main-wrapper" style="max-width: 520px; margin: 40px auto;">
+        <div id="brand-header" style="text-align: center; border-left: none; border-bottom: 5px solid var(--primary-neon); padding: 25px;">
+            <h1 style="font-size: 2em;">System Entry Portal</h1>
+            <p class="subtitle">Please authenticate or create your workspace profile</p>
+        </div>
+
+        <div id="login-form-card" class="portal-section-card" style="padding: 30px; margin-bottom: 25px;">
+            <form action="/auth/login" method="POST">
+                <h3 style="margin-top: 0; color: var(--primary-neon); font-weight: 800; border-bottom: 1px solid var(--border-light); padding-bottom: 10px; margin-bottom: 20px;">Secure Access Gateway</h3>
+                
+                <label>Select Workspace Terminal Clearance Tier:</label>
+                <select name="interface_type">
+                    <option value="customer">Customer Interface Terminal</option>
+                    <option value="staff">Official Kitchen Staff Terminal</option>
+                </select>
+
+                <label>Username Account Handle:</label>
+                <input type="text" name="username" placeholder="Enter username..." required>
+                
+                <label>Account Passkey Security PIN:</label>
+                <input type="password" name="password" placeholder="Enter password..." required>
+                
+                <button type="submit" class="btn-action-main" style="width: 100%; padding: 14px; font-size: 1.05em; border-radius: 10px; margin-bottom: 15px;">Verify Credentials & Connect</button>
+            </form>
+            <p style="text-align: center; margin: 0; font-size: 0.9em; font-weight: 600; color: var(--text-muted-light);">
+                New to the system? <button class="form-toggle-btn" onclick="switchFormMode('register')">Register here</button>
+            </p>
+        </div>
+
+        <div id="register-form-card" class="portal-section-card" style="padding: 30px; margin-bottom: 25px; display: none;">
+            <form action="/auth/signup" method="POST">
+                <h3 style="margin-top: 0; color: #10b981; font-weight: 800; border-bottom: 1px solid var(--border-light); padding-bottom: 10px; margin-bottom: 20px;">Account Registration</h3>
+                
+                <label>Select Intended Clearance Tier:</label>
+                <select name="role">
+                    <option value="customer">Customer Profile Workspace</option>
+                    <option value="staff">Official Kitchen Staff</option>
+                </select>
+
+                <label>Choose Username Handle:</label>
+                <input type="text" name="username" placeholder="Create username..." required>
+                
+                <label>Create Passkey Security PIN:</label>
+                <input type="password" name="password" placeholder="Create password..." required>
+                
+                <button type="submit" class="btn-action-main" style="width: 100%; padding: 14px; font-size: 1.05em; border-radius: 10px; background: #10b981; color: white; margin-bottom: 15px;">Complete Enrollment</button>
+            </form>
+            <p style="text-align: center; margin: 0; font-size: 0.9em; font-weight: 600; color: var(--text-muted-light);">
+                Already registered? <button class="form-toggle-btn" onclick="switchFormMode('login')">Back to Login</button>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

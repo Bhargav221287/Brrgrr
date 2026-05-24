@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brrgrr | Premium Burgers Lounge</title>
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        .portal-container { max-width: 1300px; margin: 20px auto; padding: 0 20px; }
+        .portal-section-card { background: var(--card-light); border-radius: var(--radius-lg); padding: 24px; box-shadow: var(--shadow-light); border: 1px solid var(--border-light); margin-bottom: 24px; }
+    </style>
+</head>
+<body>
+
+    <div class="portal-utility-header">
+        <div class="theme-switch-wrapper">
+            <label class="theme-switch" for="checkbox-theme-toggle">
+                <input type="checkbox" id="checkbox-theme-toggle" onclick="toggleThemeSystem()">
+                <span class="slider"></span>
+            </label>
+            <span id="theme-mode-label" style="font-size: 0.85em; font-weight: 700; color: var(--text-muted-light);">Light Mode</span>
+        </div>
+        
+        <div class="top-right-nav-menu">
+            <button class="tab-pill active" id="nav-btn-shop" onclick="switchInterfaceSection('shop')">🍔 Pre-Customized Menu</button>
+            <button class="tab-pill" id="nav-btn-customizer" onclick="switchInterfaceSection('customizer')">🛠️ Create Your Own Burger</button>
+            <button class="tab-pill" id="nav-btn-history" onclick="switchInterfaceSection('history')">📋 Order History</button>
+            <span style="color: var(--border-light);">|</span>
+            <div class="nav-links-menu" style="display: inline-block;">
+                <a href="/api/posts">📜 Blog Station</a>
+            </div>
+        </div>
+    </div>
+
+    <button class="fixed-cart-action-button" id="floating-basket-trigger" onclick="openCartOverlayDrawer()">
+        🛒 View Checkout Basket <span class="cart-counter-badge" id="floating-badge-counter">0</span>
+    </button>
+
+    <div class="drawer-background-backdrop" id="cart-backdrop-node" onclick="closeCartOverlayDrawer()"></div>
+    <div class="cart-overlay-drawer-panel" id="cart-drawer-node">
+        <div class="cart-title-header">
+            <span>🛒 Your Checkout Basket</span>
+            <button class="close-drawer-btn" onclick="closeCartOverlayDrawer()">✕ Close</button>
+        </div>
+        
+        <div style="flex: 1; overflow-y: auto; margin-bottom: 20px;">
+            <ul id="cart-items-target-list" class="cart-items-wrapper"></ul>
+        </div>
+
+        <div class="bill-details-section">
+            <div class="bill-line-row"><span>Cart Items Subtotal</span><strong>₹<span id="bill-subtotal">0.00</span></strong></div>
+            <div class="bill-line-row"><span>Extra Cheese Customization Add-ons</span><strong>₹<span id="bill-addons">0.00</span></strong></div>
+            <div class="bill-line-row"><span>Central GST (9%)</span><strong>₹<span id="bill-cgst">0.00</span></strong></div>
+            <div class="bill-line-row"><span>State GST (9%)</span><strong>₹<span id="bill-sgst">0.00</span></strong></div>
+            <div class="bill-line-row grand-total-row"><span>Grand Total Bill Amount</span><span>₹<span id="bill-grand-total">0.00</span></span></div>
+        </div>
+        <button class="btn-action-main" style="width:100%; margin-top:15px; padding:14px; font-size:1.05em; border-radius:12px;" onclick="processCartCheckoutSubmission()">Verify Checkout & Print Invoice Receipt</button>
+    </div>
+
+    <div class="portal-container">
+        <div id="brand-header">
+            <h1>Brrgrr Premium Burgers</h1>
+            <p class="subtitle">Welcome to our website! How would you like your burgers today, <span id="active-customer-display" style="color:var(--primary-neon); font-weight:700;">Customer</span>? | <a href="/auth/logout" style="color:var(--text-muted-light); font-weight:700; text-decoration:underline;">Secure Logout</a></p>
+        </div>
+
+        <div id="portal-view-shop-grid" class="food-grid">
+            <div class="menu-selection-column">
+                <div class="menu-tabs-container">
+                    <button class="tab-pill active" onclick="switchMenuTab(event, 'burgers')">Burgers</button>
+                    <button class="tab-pill" onclick="switchMenuTab(event, 'sides')">Sides & Fries</button>
+                    <button class="tab-pill" onclick="switchMenuTab(event, 'beverages')">Beverages</button>
+                </div>
+                
+                <div class="portal-section-card">
+                    <h3 id="panel-category-title" style="margin: 0; font-weight: 800; font-size: 1.25em;">Burgers</h3>
+                    <div id="dynamic-menu-injector-target"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="portal-view-customizer-grid" style="display: none; box-shadow: var(--shadow-light); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-light);">
+            <div class="reference-awning-header-decoration"></div>
+            
+            <div class="reference-dark-customizer-workspace">
+                <div class="reference-store-logo-badge-overlay">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3075/3075977.png" class="reference-logo-icon-img" alt="Logo">
+                    <div class="reference-logo-brand-txt">BRRRGRRR</div>
+                </div>
+
+                <div class="reference-customizer-columns-row">
+                    <div class="customizer-selection-grid-area">
+                        <h4>Patties & Onions Selection (Max 3 Patties Total)</h4>
+                        <div id="customizer-patties-root" style="max-height: 280px; overflow-y: auto; padding-right: 5px;"></div>
+                        
+                        <h4 style="margin-top: 15px;">Fresh Toppings Selection</h4>
+                        <div id="customizer-toppings-root" style="max-height: 180px; overflow-y: auto; padding-right: 5px;"></div>
+                    </div>
+
+                    <div>
+                        <div class="reference-hanging-chalk-board">
+                            <h4>Ingredients Chalk Prices</h4>
+                            <div id="chalk-board-prices-injector"></div>
+                        </div>
+
+                        <div class="reference-ingredients-checklist-card">
+                            <div class="reference-checklist-title">Current Assembly Ingredients</div>
+                            <div id="reference-live-checklist-target"></div>
+                        </div>
+
+                        <div class="reference-running-total-card-box">
+                            <div>
+                                <span>Current Custom Total:</span>
+                                <strong>INR <span id="customizer-running-price-label">30</span></strong>
+                            </div>
+                            <button class="btn-action-main" style="border-radius: 6px; padding: 10px 20px;" onclick="pushCustomBurgerToCart()">Pay and receive order</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="portal-view-history-grid" class="portal-section-card" style="display: none;">
+            <div class="portal-card-header" style="color: var(--primary-neon); font-weight:800; font-size:1.2em; margin-bottom:15px;">Your Live Order History Tracking</div>
+            <table class="portal-table">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Items Summary Breakdown</th>
+                        <th>Total Amount</th>
+                        <th>Kitchen Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="live-queue-box"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="/app.js"></script>
+</body>
+</html>
